@@ -1,0 +1,28 @@
+{
+  "name": "nuxt-crud",
+  "version": "1.0.0",
+  "author": "Diego Chiquero Mena",
+  "description": "Express nodeJs Server and Nuxt Vuetify Client crud",
+  "license": "MIT",
+  "homepage": "https://github.com/diegochiquero/nuxt-crud/#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "MongoDB",
+    "Express",
+    "Node",
+    "Vue",
+    "Vuex",
+    "Vue-router",
+    "Vuetify",
+    "Nuxt",
+    "Docker",
+    "Mocha"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diegochiquero/nuxt-crud.git"
+  },
+  "dependencies": {}
+}

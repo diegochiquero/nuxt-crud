@@ -1,0 +1,54 @@
+version: '3'
+services:
+  db:
+    image: mongo:4.2.0-rc1-bionic
+    container_name: nuxt_crud_mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./data:/data/db
+    networks:
+     - net
+  server:
+    build: ./server
+    image: nuxt_crud_server #setup image name
+    container_name: nuxt_crud_server
+    restart: always
+    ports:
+      - '3000:3000'
+    environment: 
+      - HOST=0.0.0.0
+      - PORT=3000
+    #depends_on:
+      #- 'db'
+    networks:
+      - net
+  client:
+    build: ./client
+    image: nuxt_crud_client
+    container_name: nuxt_crud_client
+    restart: always
+    ports:
+      - '8000:8000'
+    environment: 
+      - HOST=0.0.0.0
+      - PORT=8000
+      - API_URL=http://nuxt_crud_server:3000/api # See to move to .env file ¿?
+    #depends_on: 
+      #- 'server'
+    networks: 
+      - net
+networks:
+  net:
+    driver: bridge
+
+# Run docker-compose up db (Only development environment) to run only a database
+
+    # ports:
+    #   - '49160:3000' - 49190 to see in browser
+    # environment: 
+    #   - HOST=0.0.0.0
+    #   - PORT=3000 - to connect from client container
+
+    # if change - PORT:3000 in server need to change the same in - API_URL=http://server_nuxt_crud:3000/api
+    # and works but ports: 49160 doesn't work

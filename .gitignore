@@ -1,0 +1,21 @@
+# Logs
+logs
+*.log
+
+# Optional npm cache directory
+.npm
+
+# dotenv environment variables file
+.env
+
+# vscode configurations
+.vscode
+
+# .nvmrc
+
+# Dependency directory
+node_modules
+
+# Docker volumes
+data/
+
