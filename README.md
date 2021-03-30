@@ -1,4 +1,4 @@
-# Nuxt-crud project
+# Nuxt-crud
 
 Express nodeJs Server and Nuxt Vuetify Client crud.
 
