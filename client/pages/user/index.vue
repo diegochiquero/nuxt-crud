@@ -3,14 +3,13 @@
     <v-container class="my-5">
       <v-data-table
         :headers="headers"
-        :items="users"
+        :items="allUsers"
         sort-by="name"
         class="elevation-1"
       >
         <template #top>
           <v-toolbar flat>
             <v-toolbar-title>My CRUD</v-toolbar-title>
-            <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
               <template #activator="{ on, attrs }">
@@ -82,16 +81,13 @@
             mdi-delete
           </v-icon>
         </template>
-        <template #no-data>
-          <v-btn color="primary" @click="initialize"> Reset </v-btn>
-        </template>
       </v-data-table>
     </v-container>
   </div>
 </template>
 
 <script>
-import { mapState /*, mapGetters */ } from 'vuex'
+import { /* mapState, */ mapGetters /*, mapActions */ } from 'vuex'
 
 export default {
   data: () => ({
@@ -136,19 +132,19 @@ export default {
   },
   head() {
     return {
-      title: `${this.users[0].username} - shown`,
+      title: `${this.allUsers[0].username} - shown`,
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: this.users[0]._id
+          content: this.allUsers[0]._id
         }
       ]
     }
   },
   computed: {
-    ...mapState('user', ['users']),
-    /* ...mapGetters('user',['allUsers']) */
+    // ...mapState('user', ['users']),
+    ...mapGetters('user', ['allUsers']),
     formTitle() {
       return this.editedIndex === -1 ? 'New User' : 'Edit User'
     }
@@ -161,14 +157,11 @@ export default {
       val || this.closeDelete()
     }
   },
-  created() {
-    this.initialize()
-  },
+  // created() {
+  //   this.loadAllUsers()
+  // },
   methods: {
-    initialize() {
-      // eslint-disable-next-line no-unused-expressions
-      this.users
-    },
+    // ...mapActions('user', ['loadAllUsers']),
     editItem(item) {
       this.editedIndex = this.users.indexOf(item)
       this.editedItem = Object.assign({}, item)
