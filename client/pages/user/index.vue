@@ -1,5 +1,5 @@
 <template>
-  <div class="users">
+  <div class="  ">
     <v-container class="my-5">
       <v-data-table
         :headers="headers"
@@ -81,14 +81,17 @@
             mdi-delete
           </v-icon>
         </template>
+        <!-- <template #no-data>
+          <v-btn color="primary" @click="initialize"> Reset </v-btn>
+        </template> -->
       </v-data-table>
     </v-container>
   </div>
 </template>
 
 <script>
-import { /* mapState, */ mapGetters /*, mapActions */ } from 'vuex'
-
+import { /* mapState, */ mapGetters, mapActions } from 'vuex'
+// TODO: Add require rules
 export default {
   data: () => ({
     dialog: false,
@@ -161,21 +164,25 @@ export default {
   //   this.loadAllUsers()
   // },
   methods: {
-    // ...mapActions('user', ['loadAllUsers']),
+    ...mapActions('user', ['addUser']),
     editItem(item) {
-      this.editedIndex = this.users.indexOf(item)
+      this.editedIndex = this.allUsers.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem(item) {
-      this.editedIndex = this.users.indexOf(item)
+      // eslint-disable-next-line no-console
+      console.log(`Borrar ${item.username}`)
+      // eslint-disable-next-line no-console
+      console.log(`Delete ${this.allUsers.indexOf(item)}`)
+      this.editedIndex = this.allUsers.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     deleteItemConfirm() {
-      this.users.splice(this.editedIndex, 1)
+      this.allUsers.splice(this.editedIndex, 1)
       this.closeDelete()
     },
 
@@ -197,9 +204,14 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.users[this.editedIndex], this.editedItem)
+        Object.assign(this.allUsers[this.editedIndex], this.editedItem)
       } else {
-        this.users.push(this.editedItem)
+        this.addUser({
+          user: {
+            username: this.editedItem.username,
+            email: this.editedItem.email
+          }
+        })
       }
       this.close()
     }
