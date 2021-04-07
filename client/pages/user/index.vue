@@ -6,6 +6,14 @@
         :items="allUsers"
         sort-by="name"
         class="elevation-1"
+        :items-per-page="5"
+        :footer-props="{
+          showFirstLastPage: true,
+          firstIcon: 'mdi-arrow-collapse-left',
+          lastIcon: 'mdi-arrow-collapse-right',
+          prevIcon: 'mdi-minus',
+          nextIcon: 'mdi-plus'
+        }"
       >
         <template #top>
           <v-toolbar flat>
@@ -23,36 +31,49 @@
                   New User
                 </v-btn>
               </template>
-              <v-card>
-                <v-card-title>
-                  <span class="headline">{{ formTitle }}</span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.username"
-                          label="User name"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.email"
-                          label="Email"
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close">
-                    Cancel
-                  </v-btn>
-                  <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-                </v-card-actions>
-              </v-card>
+              <v-form ref="form" v-model="isValid">
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">{{ formTitle }}</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field
+                            v-model="editedItem.username"
+                            label="User name"
+                            :rules="nameRules"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field
+                            v-model="editedItem.email"
+                            label="Email"
+                            :rules="emailRules"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="close">
+                      Cancel
+                    </v-btn>
+                    <v-btn
+                      :disabled="!isValid"
+                      color="blue darken-1"
+                      text
+                      @click="save"
+                    >
+                      Save
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-form>
             </v-dialog>
             <v-dialog v-model="dialogDelete" max-width="500px">
               <v-card>
@@ -120,7 +141,18 @@ export default {
     defaultItem: {
       username: '',
       email: ''
-    }
+    },
+    isValid: true,
+    nameRules: [
+      (v) => !!v || 'Name is required',
+      (v) => (v && v.length <= 20) || 'Name must be less than 20 characters'
+    ],
+    emailRules: [
+      (v) => !!v || 'E-mail is required',
+      (v) =>
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+        'E-mail must be valid'
+    ]
   }),
   async fetch({ store, error }) {
     try {
@@ -213,6 +245,7 @@ export default {
           }
         })
       }
+      this.$refs.form.reset()
       this.close()
     }
   }
