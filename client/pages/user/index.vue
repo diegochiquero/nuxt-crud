@@ -102,9 +102,11 @@
             mdi-delete
           </v-icon>
         </template>
-        <!-- <template #no-data>
-          <v-btn color="primary" @click="initialize"> Reset </v-btn>
-        </template> -->
+        <template #no-data>
+          <v-alert class="mt-4" type="error">
+            Sorry, nothing to display here :( Please, enter at least one user.
+          </v-alert>
+        </template>
       </v-data-table>
     </v-container>
   </div>
@@ -112,7 +114,6 @@
 
 <script>
 import { /* mapState, */ mapGetters, mapActions } from 'vuex'
-// TODO: Add require rules
 export default {
   data: () => ({
     dialog: false,
@@ -167,12 +168,12 @@ export default {
   },
   head() {
     return {
-      title: `${this.allUsers[0].username} - shown`,
+      title: 'Nuxt crud',
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: this.allUsers[0]._id
+          content: 'Description of a nuxt crud example'
         }
       ]
     }
@@ -196,7 +197,7 @@ export default {
   //   this.loadAllUsers()
   // },
   methods: {
-    ...mapActions('user', ['addUser']),
+    ...mapActions('user', ['addUser', 'deleteUser', 'updateUser']),
     editItem(item) {
       this.editedIndex = this.allUsers.indexOf(item)
       this.editedItem = Object.assign({}, item)
@@ -204,17 +205,13 @@ export default {
     },
 
     deleteItem(item) {
-      // eslint-disable-next-line no-console
-      console.log(`Borrar ${item.username}`)
-      // eslint-disable-next-line no-console
-      console.log(`Delete ${this.allUsers.indexOf(item)}`)
-      this.editedIndex = this.allUsers.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     deleteItemConfirm() {
-      this.allUsers.splice(this.editedIndex, 1)
+      this.deleteUser(this.editedItem._id)
+      if (typeof this.$refs.form !== 'undefined') this.$refs.form.reset()
       this.closeDelete()
     },
 
@@ -236,7 +233,15 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.allUsers[this.editedIndex], this.editedItem)
+        const updUser = {
+          user: {
+            _id: this.editedItem._id,
+            username: this.editedItem.username,
+            email: this.editedItem.email
+          }
+        }
+        this.updateUser(updUser)
+        this.$refs.form.reset()
       } else {
         this.addUser({
           user: {

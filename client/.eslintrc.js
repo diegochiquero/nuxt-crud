@@ -2,10 +2,10 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true,
+    node: true
   },
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: 'babel-eslint'
   },
   extends: [
     '@nuxtjs',
@@ -13,10 +13,11 @@ module.exports = {
     'prettier/vue',
     'plugin:prettier/recommended',
     'plugin:nuxt/recommended',
+    'plugin:cypress/recommended'
   ],
   plugins: ['prettier'],
   // add your custom rules here https://github.com/vuejs/eslint-plugin-vue/issues/899
   rules: {
-    'vue/v-bind-style': 'error',
-  },
+    'vue/v-bind-style': 'error'
+  }
 }
