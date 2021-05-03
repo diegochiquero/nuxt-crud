@@ -24,7 +24,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout code
+      - name: Checkout server code
         uses: actions/checkout@v2
 
       - name: Setup node version
@@ -40,3 +40,25 @@ jobs:
       - name: Run tests
         working-directory: ./server
         run: npm run test
+
+  build-client: 
+    name: Build client
+
+    run-on: ubuntu-latest
+
+    steps: 
+      - name: Checkout client code
+        uses: actions/setup-node@v2
+
+      - name: Setup node version
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm install
+
+      - name: Run build client code
+        working-directory: ./client
+        run: npm run build
