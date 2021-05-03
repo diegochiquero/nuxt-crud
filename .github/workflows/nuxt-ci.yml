@@ -44,7 +44,7 @@ jobs:
   build-client: 
     name: Build client
 
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps: 
       - name: Checkout client code
