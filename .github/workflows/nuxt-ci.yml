@@ -33,6 +33,7 @@ jobs:
           node-version: '14.x'
 
       - name: Install dependencies
+        working-directory: ./server
         run: npm install
 
       # Runs a set of commands using the runners shell
