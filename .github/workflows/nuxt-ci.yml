@@ -51,9 +51,10 @@ jobs:
         working-directory: ./client
 
     steps: 
-      - name: Checkout client code
-        uses: actions/checkout@v2
-
+      - name: Checkout
+        uses: actions/checkout@v1
+        
+      # Install NPM dependencies, cache them correctly
       - name: Setup node version
         uses: actions/setup-node@v2
         with:
@@ -63,13 +64,14 @@ jobs:
         # working-directory: ./client
         run: npm install
 
-      - name: Run build client code
-        # working-directory: ./client
-        run: npm run build
-
-      - name: Run Cypress test
+      # and run all Cypress tests
+      - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
           browser: chrome
           headless: true
-          spec: cypress/integration/routeHome.spec.js
+          build: npm run build
+          start: npm run start
+          # quote the url to be safe against YML parsing surprises
+          wait-on: 'http://localhost:3000'
+          # spec: cypress/integration/routeHome.spec.js
