@@ -67,10 +67,6 @@ jobs:
         # working-directory: ./client
         run: npm run build
 
-      - name: Start client code
-        # working-directory: ./client
-        run: npm run start
-
       - name: Run Cypress test
         uses: cypress-io/github-action@v2
         with:
