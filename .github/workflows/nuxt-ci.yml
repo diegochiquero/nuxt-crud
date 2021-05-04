@@ -53,7 +53,7 @@ jobs:
     steps: 
       - name: Checkout
         uses: actions/checkout@v1
-        
+
       # Install NPM dependencies, cache them correctly
       - name: Setup node version
         uses: actions/setup-node@v2
@@ -70,6 +70,7 @@ jobs:
         with:
           browser: chrome
           headless: true
+          working-directory: ./client
           build: npm run build
           start: npm run start
           # quote the url to be safe against YML parsing surprises
