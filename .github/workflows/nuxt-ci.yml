@@ -46,6 +46,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./client
+
     steps: 
       - name: Checkout client code
         uses: actions/checkout@v2
@@ -56,11 +60,9 @@ jobs:
           node-version: '14.x'
 
       - name: Install dependencies
-        working-directory: ./client
         run: npm install
 
       - name: Run build & test client code with cypress
-        working-directory: ./client
         uses: cypress-io/github-action@v2
         with: 
           build: npm run build
