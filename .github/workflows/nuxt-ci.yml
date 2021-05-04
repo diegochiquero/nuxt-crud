@@ -59,6 +59,11 @@ jobs:
         working-directory: ./client
         run: npm install
 
-      - name: Run build client code
+      - name: Run build & test client code with cypress
         working-directory: ./client
-        run: npm run build
+        uses: cypress-io/github-action@v2
+        with: 
+          build: npm run build
+          start: npm start
+          wait-on: http://localhost:3030  
+
