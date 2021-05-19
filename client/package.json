@@ -12,15 +12,17 @@
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "npm run lint:js",
+    "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "test:e2e:run": "start-server-and-test start http://localhost:8000 cy:run",
+    "test:e2e:dev": "start-server-and-test dev http://localhost:8000 cy:open"
   },
   "keywords": [
     "MongoDB",
     "Express",
     "Node",
     "Docker",
-    "Mocha"
+    "Cypress"
   ],
   "dependencies": {
     "@nuxtjs/axios": "^5.12.5",
@@ -40,6 +42,7 @@
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.4.1",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "start-server-and-test": "^1.12.1"
   }
 }

@@ -18,7 +18,8 @@
     "Vuetify",
     "Nuxt",
     "Docker",
-    "Mocha"
+    "Mocha",
+    "Cypress"
   ],
   "repository": {
     "type": "git",
