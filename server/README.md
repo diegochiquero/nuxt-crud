@@ -21,12 +21,6 @@ $ npm run start:prod
 # Run unit tests
 $ npm test
 ```
-### BDD testing environment
-
-```
-# Not privide yet
-```
-
 ### Use MongoDB Docker image as a database
 
 ```
