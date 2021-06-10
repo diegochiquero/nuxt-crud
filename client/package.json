@@ -4,7 +4,7 @@
   "author": "Diego Chiquero Mena",
   "description": "Nuxt-crud client",
   "license": "MIT",
-  "homepage": "https://github.com/diegochiquero/nuxt-crud/client/#readme",
+  "homepage": "https://github.com/diegochiquero/nuxt-crud/blob/main/client/#readme",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",

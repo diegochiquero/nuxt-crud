@@ -4,7 +4,7 @@
  "author": "Diego Chiquero Mena",
  "description": "Nuxt-crud server",
  "license": "MIT",
- "homepage": "https://github.com/diegochiquero/nuxt-crud/server/#readme",
+ "homepage": "https://github.com/diegochiquero/nuxt-crud/blob/main/server/#readme",
  "main": "app.js",
  "scripts": {
   "start": "node app.js",
