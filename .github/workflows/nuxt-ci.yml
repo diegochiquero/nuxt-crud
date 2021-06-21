@@ -42,13 +42,12 @@ jobs:
         run: npm run test
 
       - name: Build and push Docker image
-        working-directory: ./server
         uses: docker/build-push-action@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: diegochiquero/nuxt-crud-server
-          dockerfile: Dockerfile
+          dockerfile: server/Dockerfile
           tags: latest
 
   build-client: 
