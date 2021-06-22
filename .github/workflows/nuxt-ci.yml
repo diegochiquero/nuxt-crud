@@ -94,5 +94,6 @@ jobs:
         with:
           context: .
           file: ./client/Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/386
           push: true
           tags: diegochiquero/nuxt-crud-client:latest
