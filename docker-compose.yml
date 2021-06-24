@@ -11,9 +11,9 @@ services:
      - net
   server:
     build: ./server
-    image: nuxt_crud_server #setup image name
+    image: nuxt-crud-server #setup image name
     container_name: nuxt_crud_server
-    restart: always
+    #restart: always
     ports:
       - '3000:3000'
     environment: 
@@ -25,9 +25,9 @@ services:
       - net
   client:
     build: ./client
-    image: nuxt_crud_client
+    image: nuxt-crud-client
     container_name: nuxt_crud_client
-    restart: always
+    #restart: always
     ports:
       - '8000:8000'
     environment: 
