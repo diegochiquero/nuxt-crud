@@ -1,41 +1,55 @@
-version: '3'
+version: "3"
 services:
   server:
-    build: ./server
-    image: nuxt_crud_server #setup image name
-    container_name: nuxt_crud_server
-    restart: always
+    image: diegochiquero/nuxt-crud-server:1.0 
     ports:
-      - '3000:3000'
-    environment: 
+      - "3000:3000"
+    environment:
       - HOST=0.0.0.0
       - PORT=3000
     networks:
       - net
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: [node.role == manager]
   client:
-    build: ./client
-    image: nuxt_crud_client
-    container_name: nuxt_crud_client
-    restart: always
+    image: diegochiquero/nuxt-crud-client:1.0 
     ports:
-      - '8000:8000'
-    environment: 
+      - "8000:8000"
+    environment:
       - HOST=0.0.0.0
       - PORT=8000
-      - API_URL=http://nuxt_crud_server:3000/api # See to move to .env file ¿?
-    networks: 
+      - API_URL=http://server:3000/ # server -> services (just bellow version: "3")
+    networks:
+      - net
+    depends_on:
+      - server
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: [node.role == manager]
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    #deploy:
+      #placement:
+        #constraints: [node.role == manager]
+    networks:
       - net
 networks:
   net:
-    driver: bridge
-
-# Run docker-compose up db (Only development environment) to run only a database
-
-    # ports:
-    #   - '49160:3000' - 49190 to see in browser
-    # environment: 
-    #   - HOST=0.0.0.0
-    #   - PORT=3000 - to connect from client container
-
-    # if change - PORT:3000 in server need to change the same in - API_URL=http://server_nuxt_crud:3000/api
-    # and works but ports: 49160 doesn't work
+    #external:
+      #name: net
+    #driver: bridge

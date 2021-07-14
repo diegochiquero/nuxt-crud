@@ -33,7 +33,7 @@ services:
     environment: 
       - HOST=0.0.0.0
       - PORT=8000
-      - API_URL=http://nuxt_crud_server:3000/api # See to move to .env file ¿?
+      - API_URL=http://nuxt_crud_server:3000/ # See to move to .env file ¿?
     #depends_on: 
       #- 'server'
     networks: 
@@ -50,5 +50,5 @@ networks:
     #   - HOST=0.0.0.0
     #   - PORT=3000 - to connect from client container
 
-    # if change - PORT:3000 in server need to change the same in - API_URL=http://server_nuxt_crud:3000/api
+    # if change - PORT:3000 in server need to change the same in - API_URL=http://server_nuxt_crud:3000/
     # and works but ports: 49160 doesn't work
