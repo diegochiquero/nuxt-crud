@@ -1,7 +1,7 @@
 version: "3"
 services:
   server:
-    image: diegochiquero/nuxt-crud-server:1.0
+    image: nuxtcrud.azurecr.io/nuxt-crud-server:1.0
     ports:
       - "3000:3000"
     environment:
@@ -18,13 +18,13 @@ services:
       placement:
         constraints: [node.role == manager]
   client:
-    image: diegochiquero/nuxt-crud-client:1.0
+    image: nuxtcrud.azurecr.io/nuxt-crud-client:1.0
     ports:
-      - "8000:8000"
+      - "80:80"
     environment:
       - HOST=0.0.0.0
-      - PORT=8000
-      - API_URL=http://server:3000/ # server -> services (just bellow version: "3")
+      - PORT=80
+      - API_URL=http://server:3000/
     networks:
       - net
     depends_on:
@@ -37,16 +37,5 @@ services:
         condition: on-failure
       placement:
         constraints: [node.role == manager]
-  visualizer:
-    image: dockersamples/visualizer:stable
-    ports:
-      - "8080:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-    networks:
-      - net
 networks:
   net:
