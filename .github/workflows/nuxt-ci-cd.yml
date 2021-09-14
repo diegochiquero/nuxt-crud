@@ -52,8 +52,8 @@ jobs:
           password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
       - run: |
-        docker build .. -t nuxtcrud.azurecr.io/nuxt-crud-server:v0.2
-        docker push nuxtcrud.azurecr.io/nuxt-crud-server:v0.2
+          docker build .. -t nuxtcrud.azurecr.io/nuxt-crud-server:v0.2
+          docker push nuxtcrud.azurecr.io/nuxt-crud-server:v0.2
 
       # - name: Build and push container 
       #   uses: docker/build-push-action@v2
