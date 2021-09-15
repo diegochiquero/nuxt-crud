@@ -16,52 +16,41 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  # build-server:
-  #   name: Build server
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
+  build-server:
+    name: Build server
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
 
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - name: Checkout server code
-  #       uses: actions/checkout@v2
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout server code
+        uses: actions/checkout@v2
 
-  #     - name: Setup node version
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '14.x'
+      - name: Setup node version
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
 
-  #     - name: Install dependencies
-  #       working-directory: ./server
-  #       run: npm install
+      - name: Install dependencies
+        working-directory: ./server
+        run: npm install
 
-  #     # Runs a set of commands using the runners shell
-  #     - name: Run tests
-  #       working-directory: ./server
-  #       run: npm run test
+      # Runs a set of commands using the runners shell
+      - name: Run tests
+        working-directory: ./server
+        run: npm run test 
 
-  #     # - name: Setup Docker Buildx
-  #     #   uses: docker/setup-buildx-action@v1  
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: nuxtcrud.azurecr.io
+          username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
+          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
-  #     - name: Login to Azure Container Registry
-  #       uses: azure/docker-login@v1
-  #       with:
-  #         login-server: nuxtcrud.azurecr.io
-  #         username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
-  #         password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
-
-  #     - run: |
-  #         docker build ./server -t nuxtcrud.azurecr.io/nuxt-crud-server:v0.2
-  #         docker push nuxtcrud.azurecr.io/nuxt-crud-server:v0.2
-
-      # - name: Build and push container 
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: ./server
-      #     file: ./server/Dockerfile
-      #     push: true
-      #     tags: nuxtcrud.azurecr.io/nuxt-crud-server:v0.1
+      - run: |
+          docker build ./server -t nuxtcrud.azurecr.io/nuxt-crud-server:v0.2
+          docker push nuxtcrud.azurecr.io/nuxt-crud-server:v0.2
 
   build-client: 
     name: Build client
@@ -93,9 +82,6 @@ jobs:
           wait-on: 'http://localhost:8000'
           # spec: cypress/integration/routeHome.spec.js
 
-      # - name: Setup Docker Buildx
-      #   uses: docker/setup-buildx-action@v1
-
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
@@ -104,13 +90,5 @@ jobs:
           password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
       - run: |
-          docker build ./client -t nuxtcrud.azurecr.io/nuxt-crud-client:v0.1
-          docker push nuxtcrud.azurecr.io/nuxt-crud-client:v0.1
-
-      # - name: Build and push container
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: ./client
-      #     file: ./client/Dockerfile
-      #     push: true
-      #     tags: nuxtcrud.azurecr.io/nuxt-crud-client:v0.1
+          docker build ./client -t nuxtcrud.azurecr.io/nuxt-crud-client:v0.2
+          docker push nuxtcrud.azurecr.io/nuxt-crud-client:v0.2
