@@ -33,15 +33,21 @@ app.use(express.static(__dirname + '/public'))
 
 if (!isProduction) {
 	app.use(errorhandler());
-  }
+}
 
-if(!isProduction) mongoose.set('debug', true)
+if (!isProduction) mongoose.set('debug', true)
 
 //Database connection
 mongoose.connect(config.db, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
-})
+	useFindAndModify: false,
+	useCreateIndex: true
+}).then(() => {
+	console.log('MongoDB connected!!');
+}).catch(err => {
+	console.log('Failed to connect to MongoDB', err);
+});
 
 console.log(`database: ${config.db}`)
 
@@ -63,17 +69,19 @@ app.use((req, res, next) => {
 // development error handler
 // will print stacktrace
 if (!isProduction) {
-	app.use(function(err, req, res, next) {
-	  console.log(err.stack);
-  
-	  res.status(err.status || 500);
-  
-	  res.json({'errors': {
-		message: err.message,
-		error: err
-	  }});
+	app.use(function (err, req, res, next) {
+		console.log(err.stack);
+
+		res.status(err.status || 500);
+
+		res.json({
+			'errors': {
+				message: err.message,
+				error: err
+			}
+		});
 	});
-  }
+}
 
 // production error handler
 // no stacktraces leaked to user
