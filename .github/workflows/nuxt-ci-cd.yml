@@ -16,82 +16,82 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains three jobs called "build-server" "build-client" "deployment"
-  # build-server:
-  #   name: Build server
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
+  build-server:
+    name: Build server
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
 
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - name: Checkout server code
-  #       uses: actions/checkout@v2
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout server code
+        uses: actions/checkout@v2
 
-  #     - name: Setup node version
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '14.x'
+      - name: Setup node version
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
 
-  #     - name: Install dependencies
-  #       working-directory: ./server
-  #       run: npm install
+      - name: Install dependencies
+        working-directory: ./server
+        run: npm install
 
-  #     # Runs a set of commands using the runners shell
-  #     - name: Run tests
-  #       working-directory: ./server
-  #       run: npm run test 
+      # Runs a set of commands using the runners shell
+      - name: Run tests
+        working-directory: ./server
+        run: npm run test 
 
-  #     - name: Login to Azure Container Registry
-  #       uses: azure/docker-login@v1
-  #       with:
-  #         login-server: nuxtcrud.azurecr.io
-  #         username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
-  #         password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: nuxtcrud.azurecr.io
+          username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
+          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
-  #     - run: |
-  #         docker build ./server -t nuxtcrud.azurecr.io/nuxt-crud-server:v0.2
-  #         docker push nuxtcrud.azurecr.io/nuxt-crud-server:v0.2
+      - run: |
+          docker build ./server -t nuxtcrud.azurecr.io/nuxt-crud-server:v0.0.1
+          docker push nuxtcrud.azurecr.io/nuxt-crud-server:v0.0.1
 
-  # build-client: 
-  #   name: Build client
+  build-client: 
+    name: Build client
 
-  #   runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-  #   steps: 
-  #     - name: Checkout client code
-  #       uses: actions/checkout@v2
+    steps: 
+      - name: Checkout client code
+        uses: actions/checkout@v2
 
-  #     - name: Setup node version
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '14.x'
+      - name: Setup node version
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
 
-  #     - name: Install dependencies
-  #       working-directory: ./client
-  #       run: npm install
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm install
 
-  #     - name: Nuxt build/start & Cypress run
-  #       uses: cypress-io/github-action@v2
-  #       with:
-  #         browser: chrome
-  #         headless: true
-  #         working-directory: ./client
-  #         build: npm run build
-  #         start: npm run start
-  #         # quote the url to be safe against YML parsing surprises
-  #         wait-on: 'http://localhost:8000'
-  #         # spec: cypress/integration/routeHome.spec.js
+      - name: Nuxt build/start & Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          headless: true
+          working-directory: ./client
+          build: npm run build
+          start: npm run start
+          # quote the url to be safe against YML parsing surprises
+          wait-on: 'http://localhost:8000'
+          # spec: cypress/integration/routeHome.spec.js
 
-  #     - name: Login to Azure Container Registry
-  #       uses: azure/docker-login@v1
-  #       with:
-  #         login-server: nuxtcrud.azurecr.io
-  #         username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
-  #         password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: nuxtcrud.azurecr.io
+          username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
+          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
-  #     - run: |
-  #         docker build ./client -t nuxtcrud.azurecr.io/nuxt-crud-client:v0.2
-  #         docker push nuxtcrud.azurecr.io/nuxt-crud-client:v0.2
+      - run: |
+          docker build ./client -t nuxtcrud.azurecr.io/nuxt-crud-client:v0.0.1
+          docker push nuxtcrud.azurecr.io/nuxt-crud-client:v0.0.1
 
   deployment:
     name: Deploy to Azure 
@@ -99,7 +99,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # wait until Jobs are finished
-    # needs: [build-server, build-client]
+    needs: [build-server, build-client]
 
     steps:
       - name: Checkout containers
@@ -116,14 +116,13 @@ jobs:
         uses: azure/login@v1
         with:  
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          #allow-no-subscriptions: true
 
       - name: Deploy Azure webapps Container
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'nuxtcrud'
-          #publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          #publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} Web App Containers. Multi container scenario not supported
           images: |
-            nuxtcrud.azurecr.io/nuxt-crud-server:1.0
-            nuxtcrud.azurecr.io/nuxt-crud-client:1.0
+            nuxtcrud.azurecr.io/nuxt-crud-server:v0.0.1
+            nuxtcrud.azurecr.io/nuxt-crud-client:v0.0.1
           configuration-file: ./docker-compose.azure.yml

@@ -1,7 +1,7 @@
 version: "3"
 services:
   server:
-    image: nuxtcrud.azurecr.io/nuxt-crud-server:1.0
+    image: nuxtcrud.azurecr.io/nuxt-crud-server:v0.0.1
     ports:
       - "3000:3000"
     environment:
@@ -18,7 +18,7 @@ services:
       placement:
         constraints: [node.role == manager]
   client:
-    image: nuxtcrud.azurecr.io/nuxt-crud-client:1.0
+    image: nuxtcrud.azurecr.io/nuxt-crud-client:v0.0.1
     ports:
       - "80:80"
     environment:
