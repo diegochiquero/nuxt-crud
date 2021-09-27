@@ -126,4 +126,4 @@ jobs:
           images: |
             nuxtcrud.azurecr.io/nuxt-crud-server:1.0
             nuxtcrud.azurecr.io/nuxt-crud-client:1.0
-          configuration-file: . docker-compose.azure.yml
+          configuration-file: ./docker-compose.azure.yml
