@@ -45,6 +45,8 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    // Simple usage
+    '@nuxtjs/proxy',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
@@ -56,7 +58,11 @@ export default {
   },
 
   proxy: {
-    '/api/': process.env.API_URL || 'http://localhost:3000/'
+    '/api/': {
+      target: process.env.API_URL || 'http://localhost:3000/api',
+      pathRewrite: { '^/api/': '' }
+      // changeOrigin: true
+    }
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
