@@ -7,9 +7,9 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   # Disabled branches doesn't exist (it doesn't exist a native way to disable a workflow so this is reason why this trick is used)
   push:
-    branches: [ disabled ]
+    branches: [ main ]
   pull_request:
-    branches: [ disabled ]
+    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
