@@ -26,6 +26,7 @@
   ],
   "dependencies": {
     "@nuxtjs/axios": "^5.12.5",
+    "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/pwa": "^3.3.4",
     "core-js": "^3.8.2",
     "nuxt": "^2.15.4"
