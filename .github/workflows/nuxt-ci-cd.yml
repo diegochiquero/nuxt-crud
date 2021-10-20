@@ -6,9 +6,9 @@ name: Continuous Integration & Continuous Deployment
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ disabled ]
+    branches: [ main ]
   pull_request:
-    branches: [ disabled ]
+    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -44,13 +44,13 @@ jobs:
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
-          login-server: nuxtcrud.azurecr.io
+          login-server: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
           password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
       - run: |
-          docker build ./server -t nuxtcrud.azurecr.io/nuxt-crud-server:v0.0.1
-          docker push nuxtcrud.azurecr.io/nuxt-crud-server:v0.0.1
+          docker build ./server -t ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/nuxt-crud-server:latest
+          docker push ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/nuxt-crud-server:latest
 
   build-client: 
     name: Build client
@@ -85,13 +85,13 @@ jobs:
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
-          login-server: nuxtcrud.azurecr.io
+          login-server: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
           password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
       - run: |
-          docker build ./client -t nuxtcrud.azurecr.io/nuxt-crud-client:v0.0.1
-          docker push nuxtcrud.azurecr.io/nuxt-crud-client:v0.0.1
+          docker build ./client -t ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/nuxt-crud-client:latest
+          docker push ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/nuxt-crud-client:latest
 
   deployment:
     name: Deploy to Azure 
@@ -116,6 +116,6 @@ jobs:
           app-name: 'nuxtcrud'
           #publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} Web App Containers. Multi container scenario not supported
           images: |
-            nuxtcrud.azurecr.io/nuxt-crud-server:v0.0.1
-            nuxtcrud.azurecr.io/nuxt-crud-client:v0.0.1
+            ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/nuxt-crud-server:latest
+            ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/nuxt-crud-client:latest
           configuration-file: ./docker-compose.azure.yml

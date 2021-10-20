@@ -1,7 +1,7 @@
 version: "3"
 services:
   server:
-    image: nuxtcrud.azurecr.io/nuxt-crud-server:v0.0.1
+    image: nuxtcrud.azurecr.io/nuxt-crud-server:latest
     ports:
       - "3000:3000"
     environment:
@@ -18,13 +18,13 @@ services:
       placement:
         constraints: [node.role == manager]
   client:
-    image: nuxtcrud.azurecr.io/nuxt-crud-client:v0.0.1
+    image: nuxtcrud.azurecr.io/nuxt-crud-client:latest
     ports:
       - "80:80"
     environment:
       - HOST=0.0.0.0
       - PORT=80
-      - API_URL=http://server:3000/
+      - API_URL=http://server:3000/api
     networks:
       - net
     depends_on:
