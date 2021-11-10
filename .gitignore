@@ -19,3 +19,5 @@ node_modules
 # Docker volumes
 data/
 
+# docker-compose server production file 
+docker-compose.azure.yml
