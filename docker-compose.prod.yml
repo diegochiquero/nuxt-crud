@@ -24,7 +24,7 @@ services:
     environment:
       - HOST=0.0.0.0
       - PORT=8000
-      - API_URL=http://server:3000/api # server -> services (just bellow version: "3")
+      - API_URL=http://server:3000/ # server -> services (just bellow version: "3")
     networks:
       - net
     depends_on:
