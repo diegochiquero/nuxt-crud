@@ -1,8 +1,9 @@
 import axios from 'axios'
-import { API_URL } from '@/services/config'
+const config = require('../config')
+const apiPath = '/api'
 
 const apiService = axios.create({
-  baseURL: API_URL,
+  baseURL: config.api,
   withCredentials: false, // This is the default
   headers: {
     Accept: 'application/json',
@@ -13,15 +14,15 @@ const apiService = axios.create({
 
 export default {
   fetchUsers() {
-    return apiService.get('/user')
+    return apiService.get(`${apiPath}/user`)
   },
   sumUpUser(params) {
-    return apiService.post('/users', params)
+    return apiService.post(`${apiPath}/users`, params)
   },
   removeUser(params) {
-    return apiService.delete(`/user/${params}`)
+    return apiService.delete(`${apiPath}/user/${params}`)
   },
   actualize(params) {
-    return apiService.put(`/user/${params.user._id}`, params)
+    return apiService.put(`${apiPath}/user/${params.user._id}`, params)
   }
 }
