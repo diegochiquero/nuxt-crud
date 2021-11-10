@@ -6,9 +6,9 @@
   "license": "MIT",
   "homepage": "https://github.com/diegochiquero/nuxt-crud/blob/main/client/#readme",
   "scripts": {
-    "dev": "nuxt",
+    "dev": "env NODE_ENV=development nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "env NODE_ENV=production nuxt start",
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "npm run lint:js",
