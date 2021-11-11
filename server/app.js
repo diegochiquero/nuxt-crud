@@ -32,7 +32,7 @@ app.use(require('method-override')())
 app.use(express.static(__dirname + '/public'))
 
 if (!isProduction) {
-	app.use(errorhandler());
+	app.use(errorhandler())
 }
 
 if (!isProduction) mongoose.set('debug', true)
@@ -44,12 +44,10 @@ mongoose.connect(config.db, {
 	useFindAndModify: false,
 	useCreateIndex: true
 }).then(() => {
-	console.log('MongoDB connected!!');
+	console.log(`database: ${config.db}`)
 }).catch(err => {
-	console.log('Failed to connect to MongoDB', err);
-});
-
-console.log(`database: ${config.db}`)
+	console.log('Failed to connect to MongoDB', err)
+})
 
 mongoose.set('useCreateIndex', true) //To avoid a deprecation warning
 
@@ -70,17 +68,17 @@ app.use((req, res, next) => {
 // will print stacktrace
 if (!isProduction) {
 	app.use(function (err, req, res, next) {
-		console.log(err.stack);
+		console.log(err.stack)
 
-		res.status(err.status || 500);
+		res.status(err.status || 500)
 
 		res.json({
 			'errors': {
 				message: err.message,
 				error: err
 			}
-		});
-	});
+		})
+	})
 }
 
 // production error handler
